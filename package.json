@@ -1,6 +1,6 @@
 {
-	"name": "discord-vscode",
-	"displayName": "Discord Custom",
+	"name": "discord-vscode-sharinghub",
+	"displayName": "Sharinghub Discord Customize",
 	"version": "1.0.0",
 	"description": "Update your discord status with a rich presence.",
 	"private": true,
