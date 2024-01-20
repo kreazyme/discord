@@ -1,4 +1,4 @@
-export declare const CLIENT_ID: "383226320970055681";
+export declare const SHARINGHUB_CLIENT_ID: "1198069229363138702";
 export declare const KNOWN_EXTENSIONS: {
     [key: string]: {
         image: string;
@@ -17,6 +17,7 @@ export declare const VSCODE_IMAGE_KEY: "vscode";
 export declare const VSCODE_INSIDERS_IMAGE_KEY: "vscode-insiders";
 export declare const UNKNOWN_GIT_BRANCH: "Unknown";
 export declare const UNKNOWN_GIT_REPO_NAME: "Unknown";
+export declare const SHARINGHUB_WORKSPACE: "sharinghub";
 export declare const enum REPLACE_KEYS {
     Empty = "{empty}",
     FileName = "{file_name}",

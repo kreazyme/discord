@@ -4,8 +4,8 @@ const { Client } = require('discord-rpc'); // eslint-disable-line
 import { commands, ExtensionContext, StatusBarAlignment, StatusBarItem, window, workspace, debug } from 'vscode';
 import throttle from 'lodash-es/throttle';
 
-import { activity } from './activity';
-import { CLIENT_ID, CONFIG_KEYS } from './constants';
+import { ActivityPayload, activity } from './activity';
+import { SHARINGHUB_CLIENT_ID, CONFIG_KEYS, SHARINGHUB_WORKSPACE } from './constants';
 import { log, LogLevel } from './logger';
 import { getConfig, getGit } from './util';
 
@@ -16,7 +16,7 @@ statusBarIcon.text = '$(pulse) Connecting to Discord...';
 let rpc = new Client({ transport: 'ipc' });
 const config = getConfig();
 
-let state = {};
+let state: ActivityPayload = {};
 let idle: NodeJS.Timeout | undefined;
 let listeners: { dispose: () => any }[] = [];
 
@@ -30,7 +30,11 @@ async function sendActivity() {
 	state = {
 		...(await activity(state)),
 	};
-	rpc.setActivity(state);
+	log(LogLevel.Info, 'Received activity payload');
+	if (state?.state?.includes(SHARINGHUB_WORKSPACE)) {
+		log(LogLevel.Info, 'Sending sharinghub activity to Discord');
+		rpc.setActivity(state);
+	}
 }
 
 async function login() {
@@ -41,8 +45,8 @@ async function login() {
 		log(LogLevel.Info, 'Successfully connected to Discord');
 		cleanUp();
 
-		statusBarIcon.text = '$(globe) Connected to Discord';
-		statusBarIcon.tooltip = 'Connected to Discord';
+		statusBarIcon.text = '$(globe) Coding Sharinghub';
+		statusBarIcon.tooltip = 'Coding Sharinghub';
 
 		void sendActivity();
 		const onChangeActiveTextEditor = window.onDidChangeActiveTextEditor(() => sendActivity());
@@ -61,7 +65,7 @@ async function login() {
 	});
 
 	try {
-		await rpc.login({ clientId: CLIENT_ID });
+		await rpc.login({ clientId: SHARINGHUB_CLIENT_ID });
 	} catch (error) {
 		log(LogLevel.Error, `Encountered following error while trying to login:\n${error as string}`);
 		cleanUp();

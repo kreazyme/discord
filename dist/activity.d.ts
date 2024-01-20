@@ -1,4 +1,4 @@
-interface ActivityPayload {
+export interface ActivityPayload {
     details?: string | undefined;
     state?: string | undefined;
     startTimestamp?: number | null | undefined;
@@ -19,4 +19,3 @@ interface ActivityPayload {
     instance?: boolean | undefined;
 }
 export declare function activity(previous?: ActivityPayload): Promise<ActivityPayload>;
-export {};

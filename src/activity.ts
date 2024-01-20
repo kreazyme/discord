@@ -17,7 +17,7 @@ import {
 import { log, LogLevel } from './logger';
 import { getConfig, getGit, resolveFileIcon, toLower, toTitle, toUpper } from './util';
 
-interface ActivityPayload {
+export interface ActivityPayload {
 	details?: string | undefined;
 	state?: string | undefined;
 	startTimestamp?: number | null | undefined;
@@ -118,8 +118,9 @@ async function details(idling: CONFIG_KEYS, editing: CONFIG_KEYS, debugging: CON
 		const workspaceFolder = workspace.getWorkspaceFolder(window.activeTextEditor.document.uri);
 		const workspaceFolderName = workspaceFolder?.name ?? noWorkspaceFound;
 		const workspaceName = workspace.name?.replace(REPLACE_KEYS.VSCodeWorkspace, EMPTY) ?? workspaceFolderName;
-		const workspaceAndFolder = `${workspaceName}${workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`
-			}`;
+		const workspaceAndFolder = `${workspaceName}${
+			workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`
+		}`;
 
 		const fileIcon = resolveFileIcon(window.activeTextEditor.document);
 
@@ -163,8 +164,8 @@ export async function activity(previous: ActivityPayload = {}) {
 	const defaultSmallImageKey = debug.activeDebugSession
 		? DEBUG_IMAGE_KEY
 		: appName.includes('Insiders')
-			? VSCODE_INSIDERS_IMAGE_KEY
-			: VSCODE_IMAGE_KEY;
+		? VSCODE_INSIDERS_IMAGE_KEY
+		: VSCODE_IMAGE_KEY;
 	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
 	const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
 	const removeDetails = config[CONFIG_KEYS.RemoveDetails];
@@ -206,18 +207,13 @@ export async function activity(previous: ActivityPayload = {}) {
 
 			state = {
 				...state,
-				buttons: [{ label: 'View Repository', url: "http://bento.me/spooon" }],
 			};
 		}
 	}
 
 	if (window.activeTextEditor) {
-		const largeImageKey = resolveFileIcon(window.activeTextEditor.document);
-		const largeImageText = config[CONFIG_KEYS.LargeImage]
-			.replace(REPLACE_KEYS.LanguageLowerCase, toLower(largeImageKey))
-			.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(largeImageKey))
-			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
-			.padEnd(2, FAKE_EMPTY);
+		const largeImageKey = 'gdsc_logo';
+		const largeImageText = 'cat_face';
 
 		state = {
 			...state,
@@ -227,10 +223,10 @@ export async function activity(previous: ActivityPayload = {}) {
 			state: removeLowerDetails
 				? undefined
 				: await details(
-					CONFIG_KEYS.LowerDetailsIdling,
-					CONFIG_KEYS.LowerDetailsEditing,
-					CONFIG_KEYS.LowerDetailsDebugging,
-				),
+						CONFIG_KEYS.LowerDetailsIdling,
+						CONFIG_KEYS.LowerDetailsEditing,
+						CONFIG_KEYS.LowerDetailsDebugging,
+				  ),
 		};
 
 		if (swapBigAndSmallImage) {
@@ -246,8 +242,6 @@ export async function activity(previous: ActivityPayload = {}) {
 				largeImageText,
 			};
 		}
-
-		log(LogLevel.Trace, `VSCode language id: ${window.activeTextEditor.document.languageId}`);
 	}
 
 	return state;

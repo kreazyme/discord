@@ -1,6 +1,6 @@
 import LANG from './data/languages.json';
 
-export const CLIENT_ID = '383226320970055681' as const;
+export const SHARINGHUB_CLIENT_ID = '1198069229363138702' as const;
 
 export const KNOWN_EXTENSIONS: { [key: string]: { image: string } } = LANG.KNOWN_EXTENSIONS;
 export const KNOWN_LANGUAGES: { language: string; image: string }[] = LANG.KNOWN_LANGUAGES;
@@ -16,6 +16,8 @@ export const VSCODE_INSIDERS_IMAGE_KEY = 'vscode-insiders' as const;
 
 export const UNKNOWN_GIT_BRANCH = 'Unknown' as const;
 export const UNKNOWN_GIT_REPO_NAME = 'Unknown' as const;
+
+export const SHARINGHUB_WORKSPACE = 'sharinghub' as const;
 
 export const enum REPLACE_KEYS {
 	Empty = '{empty}',
